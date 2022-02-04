@@ -8,6 +8,7 @@ mongoose
 .connect('mongodb://localhost:27017/fm_mongoose')
 .catch(error => console.log(error));
 
+const emailSchema = yup.string().email().required()
 
 
 const taskSchema = new Schema({
@@ -28,7 +29,10 @@ const taskSchema = new Schema({
     },
     email:{ 
       type: String,
-      required:true
+      required:true,
+      validate:{
+        validator: (v)=>emailSchema.isValid(v)
+      }
     },
     age:{
       type: Number,
@@ -57,7 +61,7 @@ app.get('/', async (req, res, next)=>{
     const tasks = await Task.find();
     res.send(tasks)
   } catch (error) {
-    
+    next(error)
   }
 });
 
