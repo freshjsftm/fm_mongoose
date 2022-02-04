@@ -2,5 +2,10 @@ POST http://localhost:3000/ HTTP/1.1
 Content-Type: application/json
 
 {
-  "description":"new task!"
+  "description":"Test yup!",
+  "author":{
+    "name":"Elon2",
+    "email":"qweerwer",
+    "age":15
+  }
 }
