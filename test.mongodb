@@ -1,0 +1,45 @@
+
+use('fm_mongo');
+//db.users.drop()
+// db.createCollection("movies",{
+//   validator:{
+//     $jsonSchema:{
+//       bsonType: "object",
+//       required: ["title","director","moreInfo"],
+//       properties: {
+//         title:{
+//           bsonType: "string",
+//           description:"must be string"          
+//         },
+//         director:{
+//           bsonType: "string"
+//         },
+//         moreInfo:{
+//           bsonType: "object",
+//           required: ["genre","year"],
+//           properties: {
+//             genre:{
+//               enum: [ "Comedy", "Triller", "Detective", null ],
+//               description:"must be one from three"
+//             },
+//             year: {
+//                bsonType: "int",
+//                minimum: 1950,
+//                maximum: 2100,
+//                description: "must be an integer in [ 1950, 2100 ] and is required"
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// })
+
+db.movies.insert({
+  title:"qwerty",
+  director:"director",
+  moreInfo:{
+    genre:"Comedy",
+    year:1999
+    }
+})
