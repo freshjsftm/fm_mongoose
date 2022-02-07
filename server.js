@@ -10,7 +10,6 @@ mongoose
 
 const emailSchema = yup.string().email().required()
 
-
 const taskSchema = new Schema({
   description:{ 
     type: String,
@@ -42,7 +41,17 @@ const taskSchema = new Schema({
     }
   }
 })
+const commentSchema = new Schema({
+  title:{
+    type: String,
+    required: true
+  },
+  task: {type: Schema.Types.ObjectId, ref:'Task'}
+})
+
 const Task = mongoose.model('Task', taskSchema);
+const Comment = mongoose.model('Comment', commentSchema);
+
 
 
 const app = express();
@@ -64,6 +73,27 @@ app.get('/', async (req, res, next)=>{
     next(error)
   }
 });
+app.patch('/:taskId', async(req, res, next)=>{
+  try {
+    const {body, params:{taskId}} = req;
+    const updatedTask = await Task.findOneAndUpdate({_id:taskId}, body, {new:true});
+    res.send(updatedTask)
+  } catch (error) {
+    next(error)
+  }
+})
+app.delete('/:taskId',async(req, res, next)=>{
+  try {
+    const {params:{taskId}} = req;
+    const deletedTask = await Task.findByIdAndRemove(taskId)
+    if(deletedTask){
+      return res.send(deletedTask)
+    }
+    res.sendStatus(404)
+  } catch (error) {
+    next(error)
+  }
+})
 
 const server = http.createServer(app);
 const PORT = process.env.PORT || 3000;

@@ -2,10 +2,10 @@ POST http://localhost:3000/ HTTP/1.1
 Content-Type: application/json
 
 {
-  "description":"Test yup!",
+  "description":"Test task!",
   "author":{
     "name":"Elon2",
-    "email":"qweerwer@xzcz.zxcx",
-    "age":15
+    "email":"qweeqq@xzcz.zxcx",
+    "age":45
   }
 }
