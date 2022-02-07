@@ -40,6 +40,9 @@ const taskSchema = new Schema({
       }
     }
   }
+},{
+  versionKey:false,
+  timestamps:true
 })
 const commentSchema = new Schema({
   title:{
@@ -47,12 +50,14 @@ const commentSchema = new Schema({
     required: true
   },
   task: {type: Schema.Types.ObjectId, ref:'Task'}
+},
+{
+  versionKey:false,
+  timestamps:true
 })
 
 const Task = mongoose.model('Task', taskSchema);
 const Comment = mongoose.model('Comment', commentSchema);
-
-
 
 const app = express();
 app.use(express.json());
@@ -90,6 +95,30 @@ app.delete('/:taskId',async(req, res, next)=>{
       return res.send(deletedTask)
     }
     res.sendStatus(404)
+  } catch (error) {
+    next(error)
+  }
+})
+app.post('/:taskId/comments', async(req, res, next)=>{
+  try {
+    const {body, params:{taskId}} = req;
+    const newComment = await Comment.create({...body, task:taskId});
+    res.send(newComment)
+  } catch (error) {
+    next(error)
+  }
+})
+
+app.get('/comments', async (req, res, next)=>{
+  try {
+    Comment.find()
+    .populate('task')
+    .exec((err,comments)=>{
+      if(err){
+        throw err
+      }
+      res.send(comments)
+    })    
   } catch (error) {
     next(error)
   }
