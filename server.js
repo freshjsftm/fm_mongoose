@@ -3,10 +3,13 @@ const express = require('express');
 const yup = require('yup');
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-
+const hostName = 'fm_mongo'; //host_name
 mongoose
-.connect('mongodb://localhost:27017/fm_mongoose')
-.catch(error => console.log(error));
+.connect(`mongodb://${hostName}:27017/fm_mongoose`)
+.catch(error => {
+  console.log(error);
+  process.exit(1);
+ });
 
 const emailSchema = yup.string().email().required()
 
@@ -108,7 +111,6 @@ app.post('/:taskId/comments', async(req, res, next)=>{
     next(error)
   }
 })
-
 app.get('/comments', async (req, res, next)=>{
   try {
     Comment.find()
@@ -125,5 +127,6 @@ app.get('/comments', async (req, res, next)=>{
 })
 
 const server = http.createServer(app);
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
+console.log(PORT);
 server.listen(PORT, ()=>{console.log('Server started!')});
